@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Baby!</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1 class="fade-in">Happy Birthday, Baby!</h1>
+            <p class="subtitle">To the most beautiful person in my life.</p>
+        </header>
+
+        <div class="main-content">
+            <div class="image-card" id="cardStack">
+                <img src="birthdaypic4.JPG" alt="Memory 5" class="stack-card">
+                <img src="birthdaypic3.jpeg" alt="Memory 4" class="stack-card">
+                <img src="birthdaypic2.jpeg" alt="Memory 3" class="stack-card">
+                <img src="Birthdaypic1.JPG" alt="Memory 2" class="stack-card">
+                <img src="Birthdaypic.jpeg" alt="Birthday Girl" class="stack-card">
+                
+                <p class="tap-hint">Tap the photo to swipe</p>
+            </div>
+
+            <div class="message-box">
+                <h2>My Birthday Message</h2>
+                <p>
+                    Happy Birthday sa pinaka espesyal na tao sa buhay ko. Sana maging masaya ka sa araw na ito at sa mga darating pang taon.
+                    Sana maenjoy mo yung birthday mo. Happy 22nd birthday, Baby! Mahal na mahal kita.
+                </p>
+                <p class="signature">— Love, Daiki Kobayashi</p>
+            </div>
+        </div>
+
+        <footer>
+            <div class="music-player">
+                <button id="musicBtn">🎵 Play Music</button>
+                <audio id="birthdaySong" loop>
+                    <source src="Palagi- TJ Monterde.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const stack = document.getElementById('cardStack');
+        let cards = Array.from(stack.querySelectorAll('.stack-card'));
+
+        stack.addEventListener('click', () => {
+            if (cards.length === 0) return;
+
+            const topCard = cards[cards.length - 1]; 
+            
+            topCard.style.transform = 'translateX(150%) rotate(30deg)';
+            topCard.style.opacity = '0';
+
+            setTimeout(() => {
+                topCard.style.transform = ''; 
+                topCard.style.opacity = '1';
+                stack.prepend(topCard);
+                cards.unshift(cards.pop());
+            }, 500);
+        });
+
+        const song = document.getElementById("birthdaySong");
+        const btn = document.getElementById("musicBtn");
+
+        btn.addEventListener("click", function() {
+            if (song.paused) {
+                song.play();
+                btn.innerHTML = "⏸ Pause Music";
+            } else {
+                song.pause();
+                btn.innerHTML = "🎵 Play Music";
+            }
+        });
+    </script>
+</body>
+</html>
