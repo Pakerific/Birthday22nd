@@ -6,8 +6,14 @@
     <title>Happy Birthday, Baby!</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>">
 </head>
 <body>
+
+    <div id="welcomeOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background-color:#fff0f5; z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; transition: opacity 0.8s ease;">
+        <h2 style="font-family: 'Dancing Script', cursive; font-size: 3rem; color: #ff4d6d; margin-bottom: 20px;">For the most beautiful person...</h2>
+        <button id="startBtn" style="padding: 15px 35px; font-family: 'Poppins', sans-serif; background: #ff4d6d; color: white; border: none; border-radius: 50px; cursor: pointer; font-size: 1.1rem; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">Click to Open ❤️</button>
+    </div>
 
     <div class="container">
         <header>
@@ -21,7 +27,8 @@
                 <img src="birthdaypic3.jpeg" alt="Memory 4" class="stack-card">
                 <img src="birthdaypic2.jpeg" alt="Memory 3" class="stack-card">
                 <img src="Birthdaypic1.JPG" alt="Memory 2" class="stack-card">
-                <img src="Birthdaypic.jpeg" alt="Birthday Girl" class="stack-card">
+                <img src="Birthdaypic.jpeg" alt="Memory 1" class="stack-card">
+                <img src="Birthdaypic0.png" alt="Memory 0" class="stack-card">
                 
                 <p class="tap-hint">Tap the photo to swipe</p>
             </div>
@@ -39,7 +46,7 @@
 
         <footer>
             <div class="music-player">
-                <button id="musicBtn">🎵 Play Music</button>
+                <button id="musicBtn">⏸ Pause Music</button>
                 <audio id="birthdaySong" loop>
                     <source src="Palagi- TJ Monterde.mp3" type="audio/mpeg">
                 </audio>
@@ -49,11 +56,27 @@
 
     <script>
         const stack = document.getElementById('cardStack');
-        let cards = Array.from(stack.querySelectorAll('.stack-card'));
+        const song = document.getElementById("birthdaySong");
+        const musicBtn = document.getElementById("musicBtn");
+        const overlay = document.getElementById("welcomeOverlay");
+        const startBtn = document.getElementById("startBtn");
+        
+        let isAnimating = false;
+
+        startBtn.addEventListener("click", function() {
+            song.play().catch(e => console.log("Audio play blocked", e));
+            musicBtn.innerHTML = "⏸ Pause Music";
+            overlay.style.opacity = "0";
+            setTimeout(() => {
+                overlay.style.display = "none";
+            }, 800);
+        });
 
         stack.addEventListener('click', () => {
-            if (cards.length === 0) return;
+            const cards = stack.querySelectorAll('.stack-card');
+            if (cards.length === 0 || isAnimating) return;
 
+            isAnimating = true;
             const topCard = cards[cards.length - 1]; 
             
             topCard.style.transform = 'translateX(150%) rotate(30deg)';
@@ -63,20 +86,17 @@
                 topCard.style.transform = ''; 
                 topCard.style.opacity = '1';
                 stack.prepend(topCard);
-                cards.unshift(cards.pop());
+                isAnimating = false;
             }, 500);
         });
 
-        const song = document.getElementById("birthdaySong");
-        const btn = document.getElementById("musicBtn");
-
-        btn.addEventListener("click", function() {
+        musicBtn.addEventListener("click", function() {
             if (song.paused) {
                 song.play();
-                btn.innerHTML = "⏸ Pause Music";
+                musicBtn.innerHTML = "⏸ Pause Music";
             } else {
                 song.pause();
-                btn.innerHTML = "🎵 Play Music";
+                musicBtn.innerHTML = "🎵 Play Music";
             }
         });
     </script>
